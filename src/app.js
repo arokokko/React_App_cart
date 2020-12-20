@@ -5,7 +5,8 @@ import ButtonDelete from './counters/buttonDel';
 export default class extends Component {
     
     state = {
-        products: getProducts()
+        products: getProducts(),
+        orderDone: false
     }
 
 
@@ -22,6 +23,10 @@ export default class extends Component {
         let products = [...this.state.products];
         products.splice(i, 1);
         this.setState({products});
+    }
+
+    sendForm = () => {
+        this.setState({orderDone: true});
     }
 
     render() {
@@ -50,26 +55,45 @@ export default class extends Component {
 
         return (
             <div style={{fontSize: 20 +'px'}}>
-                <h2>Cart</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <td> Title </td>
-                            <td> Price </td>
-                            <td> Count </td>
-                            <td> Total </td>
-                            <td> Actions </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {productsList}
-                    </tbody>
-                </table>
-                <div>Total: <span>{totalSum}</span></div>
+                {this.state.orderDone ? showPlacedOrder(totalSum) : showCart(productsList, totalSum, this.sendForm)}
             </div>
         );
-    }
-    
+    } 
+}
+
+function showCart(productsList, totalSum, sendForm) {
+    return (
+        <React.Fragment>
+            <h2>Cart</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <td> Title </td>
+                        <td> Price </td>
+                        <td> Count </td>
+                        <td> Total </td>
+                        <td> Actions </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {productsList}
+                </tbody>
+            </table>
+            <div style={{fontWeight: 'bold', fontSize: 24 + 'px'}}>Total: <span>{totalSum}</span></div>
+            <hr />
+            <button onClick={sendForm}> Order </button>
+        </React.Fragment>
+    );
+}
+
+function showPlacedOrder(totalSum) {
+    return (
+        <React.Fragment>
+            <h3>Your order was successfully placed!</h3>
+            <div>Your purchase amount is {totalSum}</div>
+            <div>Thank you</div>
+        </React.Fragment>
+    );
 }
 
 function getProducts() {
