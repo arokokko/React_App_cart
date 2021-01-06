@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import CounterClass from './counters/class';
+import CounterClass from '../class';
 import Counter from './counters/add-func';
 
 export default function() {

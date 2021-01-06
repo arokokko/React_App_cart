@@ -1,4 +1,5 @@
 let path = require('path');
+let MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 let config = {
     entry: './src/main.js',
@@ -11,6 +12,11 @@ let config = {
       overlay: true,
       open: true
     },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: 'style.css'
+      }),
+    ],
     module: {
         rules: [
           {
@@ -26,7 +32,18 @@ let config = {
                 ]
               }
             }
-          }
+          },
+          {
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: MiniCssExtractPlugin.loader,
+                
+              },
+              'css-loader',
+            ],
+          },
         ]
       }
 }
